@@ -17,7 +17,7 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult Index(decimal amount)
+    public IActionResult Index(decimal amount, string searchString)
     {
         var exchangeRates = GetDataFromCache().GetAwaiter().GetResult();
 
@@ -35,9 +35,27 @@ public class HomeController : Controller
             convertedIndex[currencyCode] = currencyValue;
         }
 
+        List<JsonProperty> searchResults = new List<JsonProperty>();
+
+        if (!String.IsNullOrEmpty(searchString))
+        {
+            searchResults = ratesObject
+                .EnumerateObject()
+                .Where(exchangeCountry =>
+                    exchangeCountry.Name
+                    .Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            convertedIndex = searchResults.ToDictionary(result => 
+                result.Name,
+                result => result.Value.GetDecimal() * amount
+            );
+        }
+
+        ViewBag.SearchString = searchString;
+
         return View(convertedIndex);
     }
-
     public async Task<string> GetDataFromCache()
     {
         await _helperMethods.UpdateCache();

@@ -3,23 +3,58 @@
     ViewData["Title"] = "Atillas";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Please write in your disired amount to convert:</p>
-    <p>(Base currency is in USD $)</p>
-    <form method="post">
-        <input type="number" min="0" name="Amount" />
-        <button type="submit">Submit</button>
-    </form>
-</div>
-<div class="container">
-    <h2>Converted Amounts:</h2>
-    <ul class="list-group">
-        @foreach (var item in Model)
-        {
-            <li class="list-group-item">
-                <strong>@item.Key:</strong> @item.Value
-            </li>
-        }
-    </ul>
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">Welcome to my simple Currency Converter!</h1>
+            <p>Write your disired amount in $USD to convert it into every currency</p>
+        </div>
+        <div class="col-3">
+            <form method="post">
+                <div class="input-group mb-3">
+                    <input 
+                        type="number" 
+                        class="form-control" 
+                        placeholder="Convert currency" 
+                        aria-label="Converter" 
+                        aria-describedby="basic-addon2" 
+                        name="Amount">
+                    <div class="input-group-append">
+                        <button class="btn btn-dark" type="submit">Convert</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-3 mt-5">
+        <form method="get">
+            <div class="input-group mb-3">
+                <input class="form-control"
+                       type="text" id="searchString"
+                       name="searchString"
+                       value="@ViewBag.SearchString"
+                       placeholder="Search for specific currency"
+                       aria-label="Search for currency"
+                       aria-describedby="basic-addon2" />
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <h2>Converted Amounts:</h2>
+                <ul class="list-group">
+                    @foreach (var item in Model)
+                    {
+                        <li class="list-group-item">
+                            <strong>@item.Key:</strong> @item.Value
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
